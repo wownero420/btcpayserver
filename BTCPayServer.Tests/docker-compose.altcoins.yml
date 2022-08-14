@@ -58,6 +58,7 @@ services:
       - sshd
       - tor
       - monero_wallet
+      - wownero_wallet
 
   sshd:
     build:
@@ -340,6 +341,27 @@ services:
           - "./monero_wallet:/wallet"
       depends_on:
             - monerod
+  wownerod:
+        image: btcpayserver/wownero:0.17.0.0-amd64
+        restart: unless-stopped
+        container_name: wow_wownerod
+        entrypoint: sleep 999999
+#        entrypoint: wownerod --fixed-difficulty 200 --rpc-bind-ip=0.0.0.0 --confirm-external-bind --rpc-bind-port=18081 --block-notify="/bin/sh ./scripts/notifier.sh -k -X GET https://host.docker.internal:14142/wownerolikedaemoncallback/block?cryptoCode=wow&hash=%s" --testnet --no-igd --hide-my-port --offline
+        volumes:
+            - "wownero_data:/home/wownero/.bitwownero"
+        ports:
+            - "18081:18081"
+  wownero_wallet:
+      image: btcpayserver/wownero:0.17.0.0-amd64
+      restart: unless-stopped
+      container_name: wow_wallet_rpc
+      entrypoint: wownero-wallet-rpc --testnet --rpc-bind-ip=0.0.0.0 --disable-rpc-login --confirm-external-bind --rpc-bind-port=18082 --non-interactive --trusted-daemon  --daemon-address=wownerod:18081 --wallet-file=/wallet/wallet.keys --password-file=/wallet/password --tx-notify="/bin/sh ./scripts/notifier.sh -k -X GET https://host.docker.internal:14142/wownerolikedaemoncallback/tx?cryptoCode=wow&hash=%s"
+      ports:
+          - "18082:18082"
+      volumes:
+          - "./wownero_wallet:/wallet"
+      depends_on:
+            - wownerod
   litecoind:
     restart: unless-stopped
     image: btcpayserver/litecoin:0.18.1
@@ -404,3 +426,4 @@ volumes:
     torrcdir:
     tor_servicesdir:
     monero_data:
+    wownero_data:

@@ -1,0 +1,12 @@
+@using BTCPayServer.Services.Altcoins.Wownero.Configuration
+@using BTCPayServer.Services.Altcoins.Wownero.UI
+@inject SignInManager<ApplicationUser> SignInManager;
+@inject WowneroLikeConfiguration WowneroLikeConfiguration;
+@{
+    var controller = ViewContext.RouteData.Values["Controller"].ToString();
+    var isWownero = controller.Equals(nameof(UIWowneroLikeStoreController), StringComparison.InvariantCultureIgnoreCase);
+}
+@if (SignInManager.IsSignedIn(User) && User.IsInRole(Roles.ServerAdmin) && WowneroLikeConfiguration.WowneroLikeConfigurationItems.Any())
+{
+    <a class="nav-link @(isWownero ? "active" : string.Empty)" asp-route-storeId="@this.Context.GetRouteValue("storeId")" asp-action="GetStoreWowneroLikePaymentMethods" asp-controller="UIWowneroLikeStore">Wownero</a>
+}

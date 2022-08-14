@@ -8,9 +8,9 @@
     <Description>A library for BTCPay Server plugin development</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>btcpay,btcpayserver</PackageTags>
-    <PackageProjectUrl>https://github.com/btcpayserver/btcpayserver/tree/master/BTCPayServer.Abstractions</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/wownero420/btcpayserver/tree/wownero/BTCPayServer.Abstractions</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/btcpayserver/btcpayserver</RepositoryUrl>
+    <RepositoryUrl>https://github.com/wownero420/btcpayserver</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
